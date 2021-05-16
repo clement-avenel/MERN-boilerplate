@@ -8,4 +8,4 @@ const dataSchema = mongoose.Schema({
 });
 
 // Export Data model
-const Data = (module.exports = mongoose.model('data', dataSchema));
+module.exports = mongoose.model('data', dataSchema);

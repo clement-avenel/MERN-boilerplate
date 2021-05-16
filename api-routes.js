@@ -1,9 +1,8 @@
-// api-routes.js
-const auth = require('./middleware/auth');
-
-const port = process.env.PORT || 8080;
 // Initialize express router
 const router = require('express').Router();
+
+// api-routes.js
+const auth = require('./middleware/auth');
 
 // Import controllers
 const dataController = require('./controllers/dataController');

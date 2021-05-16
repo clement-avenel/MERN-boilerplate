@@ -9,9 +9,7 @@ beforeAll((done) => {
       email: 'unit-test@test.com',
       password: 'azerty',
     })
-    .end((err, response) => {
-      token = response.body.token;
-      userId = response.body.userId;
+    .end(() => {
       done();
     });
 });
@@ -31,7 +29,7 @@ describe('⚠ Testing error handlers of router', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
   test('Require authorization', async (done) =>
     request(app)
@@ -41,6 +39,6 @@ describe('⚠ Testing error handlers of router', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });

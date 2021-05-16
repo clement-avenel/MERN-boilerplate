@@ -5,7 +5,7 @@ const saltRound = 10;
 
 const User = require('../models/userModel');
 
-exports.signup = (req, res, next) => {
+exports.signup = (req, res) => {
   bcrypt
     .hash(req.body.password, saltRound)
     .then((hash) => {
@@ -23,13 +23,13 @@ exports.signup = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         return res.status(400).json({ error: 'User not found ! ' });
       }
-      bcrypt
+      return bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {
           if (!valid) {
@@ -49,17 +49,20 @@ exports.login = (req, res, next) => {
             secure: true,
             httpOnly: true,
           });
+
           res.status(202).json({
             userId: user._id,
             token: accessToken,
             message: 'Connected',
           });
+
+          return res;
         })
         .catch((error) => res.status(500).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
 };
-exports.delete = (req, res, next) => {
+exports.delete = (req, res) => {
   User.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({
@@ -72,7 +75,7 @@ exports.delete = (req, res, next) => {
       });
     });
 };
-exports.passwordUpdate = (req, res, next) => {
+exports.passwordUpdate = (req, res) => {
   const { oldPassword } = req.body;
   const { newPassword1 } = req.body;
   const { newPassword2 } = req.body;
@@ -102,14 +105,14 @@ exports.passwordUpdate = (req, res, next) => {
             bcrypt
               .hash(newPassword1, saltRound)
               .then((hash) => {
-                const user = new User({
+                const updatedUser = new User({
                   _id: req.params.id,
                   username: req.body.username,
                   email: req.body.email,
                   password: hash,
                 });
 
-                User.updateOne({ _id: req.params.id }, user)
+                User.updateOne({ _id: req.params.id }, updatedUser)
                   .then(() =>
                     res
                       .status(202)
@@ -123,8 +126,10 @@ exports.passwordUpdate = (req, res, next) => {
               .status(400)
               .json({ error: 'Password 1 and 2 are not identical' });
           }
+          return res;
         })
         .catch((error) => res.status(500).json({ error }));
+      return res;
     })
     .catch((error) => res.status(500).json({ error }));
 };

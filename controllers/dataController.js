@@ -1,6 +1,6 @@
 const Data = require('../models/dataModel');
 
-exports.index = (req, res, next) => {
+exports.index = (req, res) => {
   Data.find()
     .then((datas) => {
       res.status(200).json(datas);
@@ -12,7 +12,7 @@ exports.index = (req, res, next) => {
     });
 };
 
-exports.new = (req, res, next) => {
+exports.new = (req, res) => {
   const data = new Data({
     name: req.body.name,
     userId: req.body.userId,
@@ -21,9 +21,9 @@ exports.new = (req, res, next) => {
   });
   data
     .save()
-    .then((data) => {
+    .then((e) => {
       res.status(201).json({
-        id: data.id,
+        id: e.id,
         message: 'Data saved successfully!',
       });
     })
@@ -34,7 +34,7 @@ exports.new = (req, res, next) => {
     });
 };
 
-exports.searchById = (req, res, next) => {
+exports.searchById = (req, res) => {
   Data.findOne({ _id: req.params.id })
     .then((data) => {
       res.status(200).json(data);
@@ -46,7 +46,7 @@ exports.searchById = (req, res, next) => {
     });
 };
 
-exports.update = (req, res, next) => {
+exports.update = (req, res) => {
   const data = new Data({
     _id: req.params.id,
     name: req.body.name,
@@ -67,7 +67,7 @@ exports.update = (req, res, next) => {
     });
 };
 
-exports.delete = (req, res, next) => {
+exports.delete = (req, res) => {
   Data.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({

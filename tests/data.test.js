@@ -2,6 +2,10 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../server');
 
+let token;
+let userId;
+let id;
+
 beforeAll((done) => {
   request(app)
     .post('/login')
@@ -33,7 +37,7 @@ describe('📄 Testing getting all datas', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
 
@@ -62,7 +66,7 @@ describe('📄 testing data creation', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Create data', (done) =>
@@ -91,7 +95,7 @@ describe('📄 testing data creation', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
 
@@ -106,7 +110,7 @@ describe('📄 Testing getting data by Id', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Find data by id', (done) =>
@@ -119,7 +123,7 @@ describe('📄 Testing getting data by Id', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
 
@@ -149,7 +153,7 @@ describe('📄 Testing data modification', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Update data', (done) =>
@@ -177,7 +181,7 @@ describe('📄 Testing data modification', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
 
@@ -192,7 +196,7 @@ describe('📄 Testing deleting datas', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Delete data', (done) =>
@@ -205,6 +209,6 @@ describe('📄 Testing deleting datas', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });

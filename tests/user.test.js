@@ -2,8 +2,9 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../server');
 
+let id;
+
 beforeAll((done) => {
-  randomUsername = Math.random().toString(36);
   request(app)
     .post('/login')
     .send({
@@ -11,9 +12,7 @@ beforeAll((done) => {
       email: 'unit-test@test.com',
       password: 'azerty',
     })
-    .end((err, response) => {
-      token = response.body.token;
-      const { userId } = response.body;
+    .end(() => {
       done();
     });
 });
@@ -27,7 +26,7 @@ afterAll((done) => {
 // signup
 describe('🧑 Testing user creations ', () => {
   test('Create a user with missing data', async (done) =>
-    await request(app)
+    request(app)
       .post('/signup')
       .send({
         username: 'test2',
@@ -40,11 +39,11 @@ describe('🧑 Testing user creations ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Create a user with already created email', async (done) =>
-    await request(app)
+    request(app)
       .post('/signup')
       .send({
         username: 'test2',
@@ -57,11 +56,11 @@ describe('🧑 Testing user creations ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Create a user with already created usename', async (done) =>
-    await request(app)
+    request(app)
       .post('/signup')
       .send({
         username: 'test',
@@ -74,7 +73,7 @@ describe('🧑 Testing user creations ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Create a user', (done) =>
@@ -91,14 +90,14 @@ describe('🧑 Testing user creations ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
 
 // login
 describe('🧑 Testing login ', () => {
   test('Login a user with missing data', async (done) =>
-    await request(app)
+    request(app)
       .post('/login')
       .send({
         // Missing email for test
@@ -110,11 +109,11 @@ describe('🧑 Testing login ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Login a user with wrong data', async (done) =>
-    await request(app)
+    request(app)
       .post('/login')
       .send({
         email: 'unit-tested@test.com',
@@ -126,11 +125,11 @@ describe('🧑 Testing login ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Login a user with wrong password', async (done) =>
-    await request(app)
+    request(app)
       .post('/login')
       .send({
         email: 'new.test@gmail.com',
@@ -142,7 +141,7 @@ describe('🧑 Testing login ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Login User', (done) =>
@@ -160,7 +159,7 @@ describe('🧑 Testing login ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
 
@@ -182,7 +181,7 @@ describe('🧑 Testing password modification ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Wrong old password', (done) =>
@@ -201,13 +200,13 @@ describe('🧑 Testing password modification ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('User not found', (done) => {
-    const id_test = '606da6d58b016dd81795c302';
+    const idTest = '606da6d58b016dd81795c302';
     return request(app)
-      .put(`/users/${id_test}`)
+      .put(`/users/${idTest}`)
       .send({
         username: 'test',
         email: 'new.test@gmail.com',
@@ -221,14 +220,14 @@ describe('🧑 Testing password modification ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   });
 
-  test('User id with tipo', (done) => {
-    const id_test = 'test_tipo';
+  test('User id with typo', (done) => {
+    const idTest = 'test_typo';
     return request(app)
-      .put(`/users/${id_test}`)
+      .put(`/users/${idTest}`)
       .send({
         username: 'test',
         email: 'new.test@gmail.com',
@@ -242,7 +241,7 @@ describe('🧑 Testing password modification ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   });
 
@@ -262,7 +261,7 @@ describe('🧑 Testing password modification ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Change password', (done) =>
@@ -281,7 +280,7 @@ describe('🧑 Testing password modification ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
 
@@ -296,7 +295,7 @@ describe('🧑 Deleting account ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 
   test('Delete account', (done) =>
@@ -308,6 +307,6 @@ describe('🧑 Deleting account ', () => {
         done();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       }));
 });
