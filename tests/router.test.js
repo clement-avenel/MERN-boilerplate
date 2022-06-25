@@ -2,41 +2,26 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../server');
 
-beforeAll((done) => {
-  request(app)
-    .post('/login')
-    .send({
-      email: 'unit-test@test.com',
-      password: 'azerty',
-    })
-    .end(() => {
-      done();
-    });
-});
-
-afterAll((done) => {
+afterAll(() => {
   // Closing the DB connection allows Jest to exit successfully.
   mongoose.connection.close();
-  done();
 });
 
 describe('⚠ Testing error handlers of router', () => {
-  test('Handle 404', async (done) =>
+  test('Handle 404', () =>
     request(app)
       .get('/test')
       .then((response) => {
         expect(response.statusCode).toBe(404);
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
-  test('Require authorization', async (done) =>
+  test('Require authorization', () =>
     request(app)
       .get('/data/all')
       .then((response) => {
         expect(response.statusCode).toBe(401);
-        done();
       })
       .catch((err) => {
         console.error(err);

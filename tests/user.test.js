@@ -17,66 +17,14 @@ beforeAll((done) => {
     });
 });
 
-afterAll((done) => {
+afterAll(() => {
   // Closing the DB connection allows Jest to exit successfully.
   mongoose.connection.close();
-  done();
 });
 
 // signup
 describe('🧑 Testing user creations ', () => {
-  test('Create a user with missing data', async (done) =>
-    request(app)
-      .post('/signup')
-      .send({
-        username: 'test2',
-        // Missing email for test
-        password: 'password',
-      })
-      .then((response) => {
-        expect(response.statusCode).toBe(400);
-        expect(response.type).toBe('application/json');
-        done();
-      })
-      .catch((err) => {
-        console.error(err);
-      }));
-
-  test('Create a user with already created email', async (done) =>
-    request(app)
-      .post('/signup')
-      .send({
-        username: 'test2',
-        email: 'unit-test@test.com',
-        password: 'azerty',
-      })
-      .then((response) => {
-        expect(response.statusCode).toBe(400);
-        expect(response.type).toBe('application/json');
-        done();
-      })
-      .catch((err) => {
-        console.error(err);
-      }));
-
-  test('Create a user with already created usename', async (done) =>
-    request(app)
-      .post('/signup')
-      .send({
-        username: 'test',
-        email: 'unit-test2@test.com',
-        password: 'azerty',
-      })
-      .then((response) => {
-        expect(response.statusCode).toBe(400);
-        expect(response.type).toBe('application/json');
-        done();
-      })
-      .catch((err) => {
-        console.error(err);
-      }));
-
-  test('Create a user', (done) =>
+  test('Create a user', () =>
     request(app)
       .post('/signup')
       .send({
@@ -87,7 +35,54 @@ describe('🧑 Testing user creations ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(201);
         expect(response.type).toBe('application/json');
-        done();
+      })
+      .catch((err) => {
+        console.error(err);
+      }));
+
+  test('Create a user with missing data', () =>
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'test2',
+        // Missing email for test
+        password: 'password',
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
+      })
+      .catch((err) => {
+        console.error(err);
+      }));
+
+  test('Create a user with already created email', () =>
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'test2',
+        email: 'unit-test@test.com',
+        password: 'azerty',
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
+      })
+      .catch((err) => {
+        console.error(err);
+      }));
+
+  test('Create a user with already created usename', () =>
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'test',
+        email: 'unit-test2@test.com',
+        password: 'azerty',
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
       })
       .catch((err) => {
         console.error(err);
@@ -96,7 +91,7 @@ describe('🧑 Testing user creations ', () => {
 
 // login
 describe('🧑 Testing login ', () => {
-  test('Login a user with missing data', async (done) =>
+  test('Login a user with missing data', () =>
     request(app)
       .post('/login')
       .send({
@@ -106,13 +101,12 @@ describe('🧑 Testing login ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
 
-  test('Login a user with wrong data', async (done) =>
+  test('Login a user with wrong data', () =>
     request(app)
       .post('/login')
       .send({
@@ -122,13 +116,12 @@ describe('🧑 Testing login ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
 
-  test('Login a user with wrong password', async (done) =>
+  test('Login a user with wrong password', () =>
     request(app)
       .post('/login')
       .send({
@@ -138,13 +131,12 @@ describe('🧑 Testing login ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(401);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
 
-  test('Login User', (done) =>
+  test('Login User', () =>
     request(app)
       .post('/login')
       .send({
@@ -156,7 +148,6 @@ describe('🧑 Testing login ', () => {
         id = response.body.userId;
         expect(response.statusCode).toBe(202);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
@@ -165,7 +156,7 @@ describe('🧑 Testing login ', () => {
 
 // update password
 describe('🧑 Testing password modification ', () => {
-  test('Old password and new password are the same', (done) =>
+  test('Old password and new password are the same', () =>
     request(app)
       .put(`/users/${id}`)
       .send({
@@ -178,13 +169,12 @@ describe('🧑 Testing password modification ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
 
-  test('Wrong old password', (done) =>
+  test('Wrong old password', () =>
     request(app)
       .put(`/users/${id}`)
       .send({
@@ -197,13 +187,12 @@ describe('🧑 Testing password modification ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(401);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
 
-  test('User not found', (done) => {
+  test('User not found', () => {
     const idTest = '606da6d58b016dd81795c302';
     return request(app)
       .put(`/users/${idTest}`)
@@ -217,14 +206,13 @@ describe('🧑 Testing password modification ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       });
   });
 
-  test('User id with typo', (done) => {
+  test('User id with typo', () => {
     const idTest = 'test_typo';
     return request(app)
       .put(`/users/${idTest}`)
@@ -238,14 +226,13 @@ describe('🧑 Testing password modification ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(500);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       });
   });
 
-  test('First new password and second new password are not the same', async (done) =>
+  test('First new password and second new password are not the same', () =>
     request(app)
       .put(`/users/${id}`)
       .send({
@@ -258,13 +245,12 @@ describe('🧑 Testing password modification ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
 
-  test('Change password', (done) =>
+  test('Change password', () =>
     request(app)
       .put(`/users/${id}`)
       .send({
@@ -277,7 +263,6 @@ describe('🧑 Testing password modification ', () => {
       .then((response) => {
         expect(response.statusCode).toBe(202);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
@@ -286,25 +271,23 @@ describe('🧑 Testing password modification ', () => {
 
 // delete
 describe('🧑 Deleting account ', () => {
-  test('Delete account with wrong id', (done) =>
+  test('Delete account with wrong id', () =>
     request(app)
       .delete(`/users/test`)
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);
       }));
 
-  test('Delete account', (done) =>
+  test('Delete account', () =>
     request(app)
       .delete(`/users/${id}`)
       .then((response) => {
         expect(response.statusCode).toBe(200);
         expect(response.type).toBe('application/json');
-        done();
       })
       .catch((err) => {
         console.error(err);

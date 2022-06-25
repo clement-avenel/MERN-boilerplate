@@ -3,11 +3,9 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.DB}?retryWrites=true&w=majority`,
+      `mongodb://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.DB}`,
       {
         useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
         useUnifiedTopology: true,
       },
     );
