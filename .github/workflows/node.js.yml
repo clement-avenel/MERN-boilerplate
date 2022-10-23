@@ -25,7 +25,7 @@ jobs:
       - run: npm run build --if-present
       - run: npm test
         env:
-          USER: ${{ secrets.USERNAME }}
+          USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           HOST: ${{ secrets.HOST }}
           DB: ${{ secrets.DB }}
