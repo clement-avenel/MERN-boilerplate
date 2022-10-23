@@ -24,7 +24,7 @@ exports.signup = (req, res) => {
     .catch((error) => res.status(500).json({ error }));
 };
 exports.login = (req, res) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: { $eq: req.body.email } })
     .then((user) => {
       if (!user) {
         return res.status(400).json({ error: 'User not found ! ' });
@@ -63,7 +63,7 @@ exports.login = (req, res) => {
     .catch((error) => res.status(500).json({ error }));
 };
 exports.delete = (req, res) => {
-  User.deleteOne({ _id: req.params.id })
+  User.deleteOne({ _id: { $eq: req.params.id } })
     .then(() => {
       res.status(200).json({
         message: 'User deleted!',
