@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      `mongodb://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.DB}`,
+      `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.DB}`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
